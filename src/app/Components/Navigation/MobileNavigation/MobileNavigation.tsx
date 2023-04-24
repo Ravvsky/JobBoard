@@ -1,6 +1,7 @@
 "use client";
 import { Icon } from "@iconify/react";
 import { useState, useEffect, useRef } from "react";
+import MenuItem from "../../MenuItem/MenuItem";
 
 const MobileNavigation = () => {
   const sidebarRef = useRef<HTMLDivElement | null>(null);
@@ -31,17 +32,32 @@ const MobileNavigation = () => {
     <div className="md:hidden" ref={sidebarRef}>
       <div>
         <div
-          className={`bg-main-blue fixed h-full top-0 p-[2rem] min-w-[20rem] flex justify-end items-start transition-all ease-in duration-200 ${
+          className={`bg-main-blue fixed h-full top-0 p-[2rem] min-w-[20rem] flex flex-col justify-start items-end text-right transition-all ease-in duration-200 ${
             isMenuVisible ? "right-0" : "-right-full"
           }`}
         >
           <button
             type="button"
             onClick={hamburgerClickHandler}
-            className="text-[2.5rem]"
+            className="text-[2.5rem] pb-[2rem]"
           >
             X
           </button>
+
+          <div className="flex flex-col gap-[1.5rem]">
+            <MenuItem href={"/"} currentItemColored={false}>
+              Jobs
+            </MenuItem>
+            <MenuItem href={"/companies"} currentItemColored={false}>
+              Companies
+            </MenuItem>
+            <MenuItem href={"/candidates"} currentItemColored={false}>
+              Candidates
+            </MenuItem>
+            <MenuItem href={"/inspiring-work"} currentItemColored={false}>
+              Inspiring Work
+            </MenuItem>
+          </div>
         </div>
       </div>
       <button type="button" onClick={hamburgerClickHandler}>
