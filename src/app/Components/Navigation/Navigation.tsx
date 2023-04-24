@@ -14,10 +14,18 @@ const Navigation = () => {
         Job<span className="text-main-blue">Board</span>
       </div>
       <div className="hidden gap-[3rem] md:flex">
-        <MenuItem href={"/"}>Jobs</MenuItem>
-        <MenuItem href={"/companies"}>Companies</MenuItem>
-        <MenuItem href={"/candidates"}>Candidates</MenuItem>
-        <MenuItem href={"/inspiring-work"}>Inspiring Work</MenuItem>
+        <MenuItem href={"/"} currentItemColored={true}>
+          Jobs
+        </MenuItem>
+        <MenuItem href={"/companies"} currentItemColored={true}>
+          Companies
+        </MenuItem>
+        <MenuItem href={"/candidates"} currentItemColored={true}>
+          Candidates
+        </MenuItem>
+        <MenuItem href={"/inspiring-work"} currentItemColored={true}>
+          Inspiring Work
+        </MenuItem>
       </div>
       <Button
         type="button"
