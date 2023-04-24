@@ -4,9 +4,11 @@ import { usePathname } from "next/navigation";
 const MenuItem = ({
   children,
   href,
+  currentItemColored,
 }: {
   children: React.ReactNode;
   href: string;
+  currentItemColored: boolean;
 }) => {
   const pathname = usePathname();
 
@@ -14,7 +16,7 @@ const MenuItem = ({
     <Link
       href={href}
       className={`text-[1.6rem] hover:text-main-blue transition-all ease-in duration-200 ${
-        pathname === href && "text-main-blue"
+        currentItemColored && pathname === href && "text-main-blue"
       }`}
     >
       {children}
