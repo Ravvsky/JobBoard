@@ -24,6 +24,7 @@
   },
   "devDependencies": {
     "cypress": "^12.10.0",
-    "typescript": "^5.0.4"
+    "typescript": "^5.0.4",
+    "@iconify/react": "^4.1.0"
   }
 }
