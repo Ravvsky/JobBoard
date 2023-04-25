@@ -7,7 +7,7 @@ import MobileNavigation from "./MobileNavigation/MobileNavigation";
 
 const Navigation = () => {
   const buttonClickHandler = () => {};
-
+  //TODO Test component after creating menu functionality on backend
   return (
     <nav className="text-[3.6rem] sticky top-0 font-bold py-[2.8rem] flex items-center justify-between">
       <div>
