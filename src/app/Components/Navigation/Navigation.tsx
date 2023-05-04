@@ -9,7 +9,7 @@ const Navigation = () => {
   const buttonClickHandler = () => {};
   //TODO Test component after creating menu functionality on backend
   return (
-    <nav className="text-[3.6rem] sticky top-0 font-bold py-[2.8rem] flex items-center justify-between">
+    <nav className="sticky top-0 z-20 flex items-center justify-between bg-main-gray py-[2.8rem] text-[3.6rem] font-bold">
       <div>
         Job<span className="text-main-blue">Board</span>
       </div>
