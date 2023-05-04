@@ -1,4 +1,11 @@
 export interface Seniority {
-  id: number;
-  seniority: "trainee" | "junior" | "regular" | "senior";
+  data: {
+    id: number;
+    attributes: {
+      seniority: string;
+      createdAt: Date;
+      updatedAt: Date;
+      publishedAt: Date;
+    };
+  };
 }
