@@ -1,5 +1,8 @@
 "use client";
 
+import { setFilter } from "@/redux/features/jobOfferFilters";
+import { useAppDispatch } from "@/redux/hooks";
+import { debounce } from "lodash";
 import { useEffect, useRef, useState } from "react";
 
 const RangeSlider = ({ min, max }: { min: number; max: number }) => {
@@ -8,6 +11,15 @@ const RangeSlider = ({ min, max }: { min: number; max: number }) => {
   const minValueRef = useRef<HTMLInputElement>(null);
   const maxValueRef = useRef<HTMLInputElement>(null);
   const range = useRef<HTMLDivElement>(null);
+
+  const dispatch = useAppDispatch();
+
+  const debouncedSetFilter = debounce(
+    (category: string, value: [number, number]) => {
+      dispatch(setFilter({ category, value }));
+    },
+    500 // Set a debounce delay of 500ms
+  );
 
   const getPercent = (value: any) =>
     Math.round(((value - min) / (max - min)) * 100);
@@ -35,6 +47,20 @@ const RangeSlider = ({ min, max }: { min: number; max: number }) => {
     }
   }, [minValue, maxValue]);
 
+  const handleRangeInputChange = () => {
+    // Do nothing, wait for mouseup event
+  };
+
+  const handleRangeInputMouseUp = () => {
+    if (minValueRef.current && maxValueRef.current) {
+      const category = "salary";
+      const value: [number, number] = [
+        +minValueRef.current.value,
+        +maxValueRef.current.value,
+      ];
+      debouncedSetFilter(category, value);
+    }
+  };
   return (
     <>
       <div className="mb-[0.5rem] text-[2rem] font-medium text-main-blue">
@@ -48,10 +74,13 @@ const RangeSlider = ({ min, max }: { min: number; max: number }) => {
           step={100}
           value={minValue}
           ref={minValueRef}
+          onMouseUp={handleRangeInputMouseUp}
+          onInput={handleRangeInputChange}
           onChange={(event: any) => {
             const value = Math.min(+event.target.value, maxValue - 1);
             setMinValue(value);
             event.target.value = value.toString();
+            handleRangeInputChange();
           }}
           className={`thumb:pointer-events-all pointer-events-none absolute h-0 w-[90%] appearance-none outline-none thumb:pointer-events-auto thumb:relative thumb:mt-[0.3rem] thumb:h-[2rem] thumb:w-[2rem] thumb:cursor-pointer  thumb:appearance-none thumb:rounded-[50%] thumb:bg-main-blue ${
             minValue > max - 100 ? "z-[5]" : "z-[3]"
@@ -65,10 +94,13 @@ const RangeSlider = ({ min, max }: { min: number; max: number }) => {
           step={100}
           value={maxValue}
           ref={maxValueRef}
+          onMouseUp={handleRangeInputMouseUp}
+          onInput={handleRangeInputChange}
           onChange={(event: any) => {
             const value = Math.max(+event.target.value, minValue + 1);
             setMaxValue(value);
             event.target.value = value.toString();
+            handleRangeInputChange();
           }}
           className={`thumb:pointer-events-all pointer-events-none absolute z-[4] h-0  w-[90%] appearance-none outline-none thumb:pointer-events-auto thumb:relative thumb:mt-[0.6rem] thumb:h-[2rem] thumb:w-[2rem] thumb:cursor-pointer thumb:appearance-none thumb:rounded-[50%] thumb:bg-main-blue`}
         />
