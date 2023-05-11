@@ -1,13 +1,24 @@
 "use client";
 import { useState } from "react";
 import RoundedImage from "../../atoms/RoundedImage/RoundedImage";
+import { useAppDispatch } from "@/redux/hooks";
+import { setFilter } from "@/redux/features/jobOfferFilters";
 
-const FilterTechnologiesList = ({ technologies }: { technologies: any }) => {
+const FilterTechnologiesList = ({
+  technologies,
+  category,
+}: {
+  technologies: any;
+  category: string;
+}) => {
   const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
   const [clickedNames, setClickedNames] = useState([]);
+  const dispatch = useAppDispatch();
 
   const clickHandler = (name) => {
     console.log(name);
+    dispatch(setFilter({ category, value: name }));
+
     if (clickedNames.includes(name)) {
       setClickedNames(
         clickedNames.filter((clickedName) => clickedName !== name)
