@@ -39,7 +39,7 @@ export default async function Home() {
 
   return (
     <main className="grid grid-cols-12 ">
-      <div className="col-span-3 hidden  sm:block">
+      <div className="col-span-3   mr-[4rem] hidden flex-col gap-[2rem] sm:flex">
         <FilterPanel name={"Specializations"}>
           <FilterOptionsList
             options={fetchSpecializations.data}
