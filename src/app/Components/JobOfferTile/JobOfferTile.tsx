@@ -49,12 +49,13 @@ const JobOfferTile = ({ attributes }: { attributes: JobPosting }) => {
     : "fill-transparent";
 
   return (
-    <div className="col-span-3 flex flex-col gap-[2rem] rounded-[1rem] bg-light-gray p-[2rem]">
+    <div className="col-span-3 flex h-fit flex-col gap-[2rem] rounded-[1rem] bg-light-gray p-[2rem]">
       <div className="flex flex-col gap-[1rem]">
         <div className="flex items-center justify-between">
           <Image src={companyLogoUrl} alt="" width={120} height={120} />
           <button type="button" onClick={addJobOfferToFavourite}>
             <HeartIcon
+              aria-label="add to favourite"
               className={`stroke-main-blue ${heartIconFill} stroke-[20px]	transition-all duration-200 ease-in  hover:fill-main-blue	`}
             />
           </button>
@@ -81,7 +82,7 @@ const JobOfferTile = ({ attributes }: { attributes: JobPosting }) => {
       </div>
 
       <div className="flex gap-[1rem]">
-        <Badge> {seniority.seniority}</Badge>
+        <Badge> {seniority.data.attributes.seniority}</Badge>
         <Badge> {employmentMode}</Badge>
         <Badge> {employmentType}</Badge>
       </div>

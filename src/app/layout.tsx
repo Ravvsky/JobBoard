@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import Navigation from "./Components/Navigation/Navigation";
 import "./globals.css";
 import { Inter } from "next/font/google";
+import { Providers } from "@/redux/provider";
 
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
@@ -19,7 +20,7 @@ export default function RootLayout({
         className={`${inter.className} m-auto px-[2rem] sm:max-w-[60rem] sm:px-0 md:max-w-[74rem] lg:max-w-[90rem] xl:max-w-[120rem] 2xl:max-w-[144rem]`}
       >
         <Navigation />
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

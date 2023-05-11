@@ -1,14 +1,34 @@
 import { Inter } from "next/font/google";
-import JobOfferTile from "./Components/JobOfferTile/JobOfferTile";
-import { Key } from "react";
-import { JobPosting } from "./types/JobPosting";
-
+import FilterPanel from "./Components/FilterPanel/FilterPanel";
+import FilterOptionsList from "./Components/molecules/FilterOptionsList/FilterOptionsList";
+import FilterTechnologiesList from "./Components/molecules/FilterTechnologiesList/FilterTechnologiesList";
+import RangeSlider from "./Components/RangeSlider/RangeSlider";
+import FilterButtonsList from "./Components/molecules/FilterButtonsList/FilterButtonsList";
+import JobOfferList from "./Components/JobOfferList/JobOfferList";
 const inter = Inter({ subsets: ["latin"] });
 
 export default async function Home() {
   const API_TOKEN = process.env.API_TOKEN;
-  const fetchJobOffers = await fetch(
-    `http://localhost:1337/api/job-offers?populate[technologies][populate]=*&populate[company][populate]=*&populate[locations]=*&populate[seniority]=*`,
+  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+
+  const fetchSpecializations = await fetch(
+    `${BACKEND_URL}/api/specializations`,
+    {
+      headers: {
+        Authorization: `Bearer ${API_TOKEN}`,
+        "Content-Type": "application/json",
+      },
+    }
+  ).then((response) => response.json());
+  const fetchSeniorities = await fetch(`${BACKEND_URL}/api/seniorities`, {
+    headers: {
+      Authorization: `Bearer ${API_TOKEN}`,
+      "Content-Type": "application/json",
+    },
+  }).then((response) => response.json());
+
+  const fetchTechnologies = await fetch(
+    `${BACKEND_URL}/api/technologies?populate=*`,
     {
       headers: {
         Authorization: `Bearer ${API_TOKEN}`,
@@ -19,16 +39,34 @@ export default async function Home() {
 
   return (
     <main className="grid grid-cols-12 ">
-      <div className="col-span-3 hidden bg-[#ff0000] sm:block">TTT</div>
-      <div className="col-span-12 grid grid-cols-3 gap-[2rem] sm:col-span-9 md:grid-cols-6 xl:grid-cols-9 ">
-        {fetchJobOffers.data.map(
-          (offer: { id: Key | null | undefined; attributes: JobPosting }) => {
-            return (
-              <JobOfferTile key={offer.id} attributes={offer.attributes} />
-            );
-          }
-        )}
+      <div className="col-span-3   mr-[4rem] hidden flex-col gap-[2rem] sm:flex">
+        <FilterPanel name={"Specializations"}>
+          <FilterOptionsList
+            options={fetchSpecializations.data}
+            category={"specializations"}
+          />
+        </FilterPanel>
+        <FilterPanel name={"Seniorities"}>
+          <FilterOptionsList
+            options={fetchSeniorities.data}
+            category={"seniorities"}
+          />
+        </FilterPanel>
+
+        <FilterPanel name={"Skills"}>
+          <FilterTechnologiesList
+            technologies={fetchTechnologies.data}
+            category={"technologies"}
+          />
+        </FilterPanel>
+        <FilterPanel name={"Salary"}>
+          <RangeSlider min={0} max={30000} />
+        </FilterPanel>
+        <FilterPanel name={"Work Preference"}>
+          <FilterButtonsList />
+        </FilterPanel>
       </div>
+      <JobOfferList />
     </main>
   );
 }

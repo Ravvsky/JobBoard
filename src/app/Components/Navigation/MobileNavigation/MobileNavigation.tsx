@@ -32,19 +32,19 @@ const MobileNavigation = () => {
     <div className="md:hidden" ref={sidebarRef}>
       <div>
         <div
-          className={`bg-main-blue fixed h-full top-0 p-[2rem] min-w-[20rem] flex flex-col justify-start items-end text-right transition-all ease-in duration-200 ${
+          className={`fixed top-0 flex h-full min-w-[20rem] flex-col items-end justify-start bg-main-blue p-[2rem] text-right transition-all duration-200 ease-in ${
             isMenuVisible ? "right-0" : "-right-full"
           }`}
         >
           <button
             type="button"
             onClick={hamburgerClickHandler}
-            className="text-[2.5rem] pb-[2rem]"
+            className="pb-[2rem] text-[2.5rem]"
           >
             X
           </button>
 
-          <div className="flex flex-col gap-[1.5rem]">
+          <div className="flex flex-col gap-[1.5rem] text-[#2C2C2C]">
             <MenuItem href={"/"} currentItemColored={false}>
               Jobs
             </MenuItem>
@@ -60,10 +60,14 @@ const MobileNavigation = () => {
           </div>
         </div>
       </div>
-      <button type="button" onClick={hamburgerClickHandler}>
+      <button
+        type="button"
+        onClick={hamburgerClickHandler}
+        aria-label="hamburger menu"
+      >
         <Icon
           icon="solar:hamburger-menu-linear"
-          className={`hover:text-main-blue transition-all ease-in duration-200 ${
+          className={`transition-all duration-200 ease-in hover:text-main-blue ${
             isMenuVisible && "hidden"
           }`}
         />
