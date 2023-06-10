@@ -18,6 +18,7 @@ const FilterOption = ({
     <>
       <Checkbox
         id={label}
+        name={label}
         height={2}
         width={2}
         value={""}
