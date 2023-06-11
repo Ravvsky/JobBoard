@@ -163,11 +163,7 @@ const LoginForm = ({ onSignUpLinkClick }) => {
             </button>
             <div>
               Don't have an account?
-              <Link
-                href="sign-up"
-                className="text-main-blue hover:text-light-blue"
-                onClick={onSignUpLinkClick}
-              >
+              <Link href="sign-up" onClick={onSignUpLinkClick}>
                 {" "}
                 Sign up here
               </Link>

@@ -104,7 +104,7 @@ const JobOfferTile = ({ attributes }: { attributes: JobPosting }) => {
 
       <Link
         href={linkToExternalApplication || "#"}
-        className="text-left font-semibold text-main-blue transition-all hover:text-white"
+        className="text-left font-semibold"
       >
         Apply now
       </Link>
