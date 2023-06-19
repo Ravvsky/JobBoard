@@ -1,15 +1,25 @@
 "use client";
 
-import { Field } from "formik";
+import { Field, useFormikContext } from "formik";
 import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 
-const Input = ({ name, type, placeholder, errors, touched }) => {
+const Input = ({ name, type, placeholder, errors, touched, onBlur }) => {
   const [isFocused, setIsFocused] = useState(false);
 
-  useEffect(() => {
-    console.log(errors);
-  }, [errors]);
+  const { validateForm, setFieldTouched } = useFormikContext();
+
+  const handleBlur = (event) => {
+    if (onBlur) {
+      onBlur(event);
+    }
+    if (!event.target.value) {
+      setIsFocused(false);
+    }
+    setFieldTouched(name, true, false);
+
+    validateForm();
+  };
   return (
     <div className="relative mb-[2rem] h-[3.5rem]">
       <label
@@ -36,11 +46,7 @@ const Input = ({ name, type, placeholder, errors, touched }) => {
         onFocus={() => {
           setIsFocused(true);
         }}
-        onBlur={(e) => {
-          if (!e.target.value) {
-            setIsFocused(false);
-          }
-        }}
+        onBlur={handleBlur}
       />
     </div>
   );
