@@ -23,13 +23,12 @@ const LoginForm = ({ onSignUpLinkClick }) => {
   const [isLoginFailed, setIsLoginFailed] = useState(null);
   const submitHandler = async (values) => {
     loginUser(values).then((res) => {
-      console.log(res);
       if (res.error) {
         setIsLoginFailed(true);
         return;
       }
       onSignUpLinkClick();
-      router.push("/developer");
+      router.push("/dashboard");
     });
   };
 
