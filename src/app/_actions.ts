@@ -20,7 +20,11 @@ export async function fetchJobOffersAction(filters?: any) {
   return data.data;
 }
 
-export async function loginUser(userData) {
+export async function loginUser(userData: {
+  email: string;
+  password: string;
+  rememberMe: boolean;
+}) {
   const USERS_API_TOKEN = process.env.USERS_API_TOKEN;
   const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
   const modifiedUserData = {
@@ -51,7 +55,6 @@ export async function loginUser(userData) {
     expires: expirationDate(),
     path: "/",
   });
-  console.log(data);
   return data;
 }
 
@@ -110,6 +113,63 @@ export async function userResetPassword(passwordData) {
       "Content-Type": "application/json",
     },
   }).then((response) => response.json());
+
+  return data;
+}
+
+export async function userRegister(userData) {
+  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+  const USERS_API_TOKEN = process.env.USERS_API_TOKEN;
+
+  const modifiedData = {
+    email: userData.email,
+    username: userData.email,
+    password: userData.password,
+  };
+  const data = await fetch(`${BACKEND_URL}/api/auth/local/register`, {
+    cache: "no-store",
+    method: "POST",
+    body: JSON.stringify(modifiedData),
+    headers: {
+      Authorization: `Bearer ${USERS_API_TOKEN}`,
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => response.json())
+
+    .catch((error) => {
+      return { error: error.cause.code };
+    });
+
+  return data;
+}
+
+export async function isEmailTaken(email) {
+  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+  const USERS_API_TOKEN = process.env.USERS_API_TOKEN;
+
+  const data = await fetch(
+    `${BACKEND_URL}/api/users?filters[$and][0][email][$eq]=${email}`,
+    {
+      method: "GET",
+      cache: "no-store",
+      headers: {
+        Authorization: `Bearer ${USERS_API_TOKEN}`,
+        "Content-Type": "application/json",
+      },
+    }
+  )
+    .then((response) => response.json())
+    .then((res) => {
+      if (res.length > 0) {
+        return true;
+      }
+
+      return false;
+    })
+    .catch((error) => {
+      return { error: error.code };
+    });
 
   return data;
 }
