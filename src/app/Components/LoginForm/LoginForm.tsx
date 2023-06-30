@@ -11,7 +11,11 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import ForgotPasswordForm from "../ForgotPasswordForm/ForgotPasswordForm";
 
-const LoginForm = ({ onSignUpLinkClick }) => {
+const LoginForm = ({
+  onSignUpLinkClick,
+}: {
+  onSignUpLinkClick: () => void;
+}) => {
   const router = useRouter();
 
   const initialValues = {
@@ -19,9 +23,12 @@ const LoginForm = ({ onSignUpLinkClick }) => {
     password: "",
     rememberMe: false,
   };
-  const [userData, setUserData] = useState();
-  const [isLoginFailed, setIsLoginFailed] = useState(null);
-  const submitHandler = async (values) => {
+  const [isLoginFailed, setIsLoginFailed] = useState(false);
+  const submitHandler = async (values: {
+    email: string;
+    password: string;
+    rememberMe: boolean;
+  }) => {
     loginUser(values).then((res) => {
       if (res.error) {
         setIsLoginFailed(true);
@@ -161,7 +168,7 @@ const LoginForm = ({ onSignUpLinkClick }) => {
               Sign in
             </button>
             <div>
-              Don't have an account?
+              Don&apos;t have an account?
               <Link href="sign-up" onClick={onSignUpLinkClick}>
                 {" "}
                 Sign up here

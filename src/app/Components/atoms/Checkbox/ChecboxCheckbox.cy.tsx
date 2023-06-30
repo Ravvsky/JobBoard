@@ -6,10 +6,11 @@ describe("<Checkbox />", () => {
   it("renders", () => {
     mount(
       <Checkbox
+        name="xdxd"
         id="test-checkbox"
         value="test-value"
         onChange={() => console.log("Checkbox changed")}
-      />
+      />,
     );
 
     cy.get('input[type="checkbox"]').should("exist");
@@ -19,7 +20,12 @@ describe("<Checkbox />", () => {
   it("triggers onChange event when checkbox is checked/unchecked", () => {
     const onChange = cy.spy();
     mount(
-      <Checkbox id="test-checkbox" value="test-value" onChange={onChange} />
+      <Checkbox
+        id="test-checkbox"
+        name="xdxd"
+        value="test-value"
+        onChange={onChange}
+      />,
     );
 
     cy.get('input[type="checkbox"]')
@@ -36,7 +42,14 @@ describe("<Checkbox />", () => {
   });
   it("is unchecked by default", () => {
     mount(
-      <Checkbox id="test-checkbox" value="test-value" onChange={() => {}} />
+      <Checkbox
+        id="test-checkbox"
+        name="xdxd"
+        value="test-value"
+        onChange={() => {
+          console.log("xd");
+        }}
+      />,
     );
     cy.get('input[type="checkbox"]').should("not.be.checked");
   });

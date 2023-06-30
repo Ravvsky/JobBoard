@@ -6,9 +6,10 @@ describe("<Button />", () => {
     // see: https://on.cypress.io/mounting-react
     const onClick = cy.stub();
     cy.mount(
+      // eslint-disable-next-line tailwindcss/no-custom-classname
       <Button type="submit" onClick={onClick} className="custom-class">
         Button
-      </Button>
+      </Button>,
     );
 
     cy.get("button")
@@ -23,7 +24,7 @@ describe("<Button />", () => {
     cy.mount(
       <Button onClick={onClick} type="submit">
         Button
-      </Button>
+      </Button>,
     );
     cy.get("button").click();
     cy.get("@onClick").should("have.been.called");

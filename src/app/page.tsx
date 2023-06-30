@@ -1,11 +1,9 @@
-import { Inter } from "next/font/google";
 import FilterPanel from "./Components/FilterPanel/FilterPanel";
 import FilterOptionsList from "./Components/molecules/FilterOptionsList/FilterOptionsList";
 import FilterTechnologiesList from "./Components/molecules/FilterTechnologiesList/FilterTechnologiesList";
 import RangeSlider from "./Components/RangeSlider/RangeSlider";
 import FilterButtonsList from "./Components/molecules/FilterButtonsList/FilterButtonsList";
 import JobOfferList from "./Components/JobOfferList/JobOfferList";
-const inter = Inter({ subsets: ["latin"] });
 
 export default async function Home() {
   const API_TOKEN = process.env.API_TOKEN;
@@ -18,7 +16,7 @@ export default async function Home() {
         Authorization: `Bearer ${API_TOKEN}`,
         "Content-Type": "application/json",
       },
-    }
+    },
   ).then((response) => response.json());
   const fetchSeniorities = await fetch(`${BACKEND_URL}/api/seniorities`, {
     headers: {
@@ -34,7 +32,7 @@ export default async function Home() {
         Authorization: `Bearer ${API_TOKEN}`,
         "Content-Type": "application/json",
       },
-    }
+    },
   ).then((response) => response.json());
 
   return (

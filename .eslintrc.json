@@ -1,18 +1,19 @@
 {
   "extends": [
     "next/core-web-vitals",
-    "eslint:recommended",
-    "plugin:react/recommended",
-    "plugin:next/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended",
     "plugin:tailwindcss/recommended",
-    "plugin:import/errors",
-    "plugin:import/warnings",
-    "prettier",
-    "prettier/react"
+    "prettier"
   ],
-  "plugins": ["prettier"],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
   "rules": {
-    "prettier/prettier": "error",
-    "react/prop-types": "off"
+    "prettier/prettier": [
+      "error",
+      {
+        "singleQuote": false
+      }
+    ]
   }
 }

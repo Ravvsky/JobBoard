@@ -7,7 +7,13 @@ describe("<RoundedImage />", () => {
   it("calls onClick function when image is clicked", () => {
     const onClick = cy.stub();
     cy.mount(
-      <RoundedImage src={src} alt={""} onClick={onClick} width={1} height={1} />
+      <RoundedImage
+        src={src}
+        alt={""}
+        onClick={onClick}
+        width={1}
+        height={1}
+      />,
     );
     cy.get("img")
       .click()
@@ -24,7 +30,7 @@ describe("<RoundedImage />", () => {
         className={className}
         width={1}
         height={1}
-      />
+      />,
     );
     cy.get("img").should("have.class", className);
   });

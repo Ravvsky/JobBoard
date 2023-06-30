@@ -15,7 +15,7 @@ const MenuItem = ({
   return (
     <Link
       href={href}
-      className={`text-[1.6rem] hover:text-main-blue transition-all ease-in duration-200 ${
+      className={`text-[1.6rem] transition-all duration-200 ease-in hover:text-main-blue ${
         currentItemColored && pathname === href && "text-main-blue"
       }`}
     >

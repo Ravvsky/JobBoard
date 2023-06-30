@@ -1,18 +1,18 @@
-import { ErrorMessage, Field, Form, Formik } from "formik";
+import { ErrorMessage, Form, Formik } from "formik";
 import Input from "../atoms/Input/Input";
 import { useState } from "react";
 import * as Yup from "yup";
 import { userForgotPassword } from "@/app/_actions";
 
-const PasswordRecoveryForm = ({ onBackClick }) => {
+const PasswordRecoveryForm = ({ onBackClick }: { onBackClick: () => void }) => {
   const initialValues = { email: "" };
 
-  const [isFormSend, setIsFormSend] = useState();
+  const [isFormSend, setIsFormSend] = useState(false);
   const passwordRecoveyValidationSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Required"),
   });
-  const submitHandler = async (values) => {
-    userForgotPassword(values.email).then((res) => {
+  const submitHandler = async (values: { email: string }) => {
+    userForgotPassword(values.email).then(() => {
       setIsFormSend(true);
     });
   };
@@ -74,7 +74,7 @@ const PasswordRecoveryForm = ({ onBackClick }) => {
       {isFormSend && (
         <div className="flex flex-col gap-[2rem] rounded-[2rem] bg-main-gray p-[2rem]">
           <div className="text-[1.6rem]">
-            We've send you a message with link to reset your password
+            We&apos;ve send you a message with link to reset your password
           </div>
           <button
             type="button"

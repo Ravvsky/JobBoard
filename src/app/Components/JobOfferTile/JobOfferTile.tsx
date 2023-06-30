@@ -34,7 +34,9 @@ const JobOfferTile = ({ attributes }: { attributes: JobPosting }) => {
 
   const companyLogoUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}${company.data.attributes.logo.data.attributes.url}`;
 
-  const getLocationDisplayText = (locations: string | any[]) => {
+  const getLocationDisplayText = (
+    locations: { id: number; location: string }[],
+  ) => {
     if (locations.length === 0) {
       return "Remote only";
     } else if (locations.length === 1) {

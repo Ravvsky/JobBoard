@@ -1,10 +1,10 @@
 "use server";
 import { cookies } from "next/headers";
 
-export async function fetchJobOffersAction(filters?: any) {
+export async function fetchJobOffersAction(filters?: string) {
   const API_TOKEN = process.env.API_TOKEN;
   const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
-
+  console.log(filters);
   const data = await fetch(
     `${BACKEND_URL}/api/job-offers?${
       filters && filters.length > 0 && filters
@@ -14,7 +14,7 @@ export async function fetchJobOffersAction(filters?: any) {
         Authorization: `Bearer ${API_TOKEN}`,
         "Content-Type": "application/json",
       },
-    }
+    },
   ).then((response) => response.json());
 
   return data.data;
@@ -62,7 +62,9 @@ export async function getUserData() {
   const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
   const userToken = cookies().get("authToken");
-
+  if (!userToken) {
+    throw new Error("User token is missing or undefined.");
+  }
   const data = await fetch(`${BACKEND_URL}/api/users/me`, {
     method: "GET",
     headers: {
@@ -100,10 +102,14 @@ export async function userForgotPassword(email: string) {
   return data;
 }
 
-export async function userResetPassword(passwordData) {
+export async function userResetPassword(passwordData: {
+  password: string;
+  passwordConfirmation: string;
+  code: string;
+}) {
   const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
   const USERS_API_TOKEN = process.env.USERS_API_TOKEN;
-
+  console.log(passwordData);
   const data = await fetch(`${BACKEND_URL}/api/auth/reset-password`, {
     cache: "no-store",
     method: "POST",
@@ -117,7 +123,10 @@ export async function userResetPassword(passwordData) {
   return data;
 }
 
-export async function userRegister(userData) {
+export async function userRegister(userData: {
+  email: string;
+  password: string;
+}) {
   const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
   const USERS_API_TOKEN = process.env.USERS_API_TOKEN;
 
@@ -144,7 +153,7 @@ export async function userRegister(userData) {
   return data;
 }
 
-export async function isEmailTaken(email) {
+export async function isEmailTaken(email: string) {
   const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
   const USERS_API_TOKEN = process.env.USERS_API_TOKEN;
 
@@ -157,7 +166,7 @@ export async function isEmailTaken(email) {
         Authorization: `Bearer ${USERS_API_TOKEN}`,
         "Content-Type": "application/json",
       },
-    }
+    },
   )
     .then((response) => response.json())
     .then((res) => {

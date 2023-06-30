@@ -1,5 +1,5 @@
 "use client";
-import { FieldHookConfig } from "formik";
+import { FieldHookConfig, FieldInputProps } from "formik";
 import { InputHTMLAttributes, Ref } from "react";
 
 type CheckboxProps = InputHTMLAttributes<HTMLInputElement> &
@@ -7,7 +7,7 @@ type CheckboxProps = InputHTMLAttributes<HTMLInputElement> &
     width?: number;
     height?: number;
     id: string;
-    field?: any;
+    field?: FieldInputProps<boolean>;
     ref?: Ref<HTMLInputElement>;
   };
 
@@ -18,13 +18,15 @@ const Checkbox = ({
   field,
   ...props
 }: CheckboxProps) => {
+  const dynamicWidth = `w-[${width}rem]`;
+  const dynamicHeight = `h-[${height}rem]`;
   return (
     <input
       type="checkbox"
       id={id}
       {...field}
       {...props}
-      className={`peer h-[${height}rem] w-[${width}rem] cursor-pointer rounded-[0.4rem] border-[1px] border-solid border-main-blue border-opacity-40 bg-light-gray checked:bg-main-blue checked:hover:bg-main-blue focus:ring-transparent focus:ring-offset-0 checked:focus:bg-main-blue`}
+      className={`${dynamicWidth} ${dynamicHeight} peer cursor-pointer rounded-[0.4rem] border-[1px] border-solid border-main-blue/40 bg-light-gray checked:bg-main-blue checked:hover:bg-main-blue focus:ring-transparent focus:ring-offset-0 checked:focus:bg-main-blue`}
     />
   );
 };

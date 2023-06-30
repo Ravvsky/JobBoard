@@ -3,6 +3,7 @@
 import { setFilter } from "@/redux/features/jobOfferFilters";
 import { useAppDispatch } from "@/redux/hooks";
 import { debounce } from "lodash";
+import { ChangeEvent, useCallback } from "react";
 import { useEffect, useRef, useState } from "react";
 
 const RangeSlider = ({ min, max }: { min: number; max: number }) => {
@@ -18,12 +19,15 @@ const RangeSlider = ({ min, max }: { min: number; max: number }) => {
     (category: string, value: [number, number]) => {
       dispatch(setFilter({ category, value }));
     },
-    500
+    500,
   );
 
-  const getPercent = (value: any) =>
-    Math.round(((value - min) / (max - min)) * 100);
-
+  const getPercent = useCallback(
+    (value: number) => {
+      return Math.round(((value - min) / (max - min)) * 100);
+    },
+    [min, max],
+  );
   useEffect(() => {
     if (maxValueRef.current) {
       const minPercent = getPercent(minValue);
@@ -34,7 +38,7 @@ const RangeSlider = ({ min, max }: { min: number; max: number }) => {
         range.current.style.width = `${maxPercent - minPercent}%`;
       }
     }
-  }, [minValue]);
+  }, [minValue, getPercent]);
 
   useEffect(() => {
     if (minValueRef.current && maxValueRef.current) {
@@ -45,7 +49,7 @@ const RangeSlider = ({ min, max }: { min: number; max: number }) => {
         range.current.style.width = `${maxPercent - minPercent}%`;
       }
     }
-  }, [minValue, maxValue]);
+  }, [minValue, maxValue, getPercent]);
 
   const handleRangeInputMouseUp = () => {
     if (minValueRef.current && maxValueRef.current) {
@@ -71,11 +75,12 @@ const RangeSlider = ({ min, max }: { min: number; max: number }) => {
           value={minValue}
           ref={minValueRef}
           onMouseUp={handleRangeInputMouseUp}
-          onChange={(event: any) => {
+          onChange={(event: ChangeEvent<HTMLInputElement>) => {
             const value = Math.min(+event.target.value, maxValue - 1);
             setMinValue(value);
             event.target.value = value.toString();
           }}
+          // eslint-disable-next-line tailwindcss/no-custom-classname
           className={`thumb:pointer-events-all pointer-events-none absolute h-0 w-[90%] appearance-none outline-none thumb:pointer-events-auto thumb:relative thumb:mt-[0.3rem] thumb:h-[2rem] thumb:w-[2rem] thumb:cursor-pointer  thumb:appearance-none thumb:rounded-[50%] thumb:bg-main-blue ${
             minValue > max - 100 ? "z-[5]" : "z-[3]"
           }`}
@@ -89,15 +94,16 @@ const RangeSlider = ({ min, max }: { min: number; max: number }) => {
           value={maxValue}
           ref={maxValueRef}
           onMouseUp={handleRangeInputMouseUp}
-          onChange={(event: any) => {
+          onChange={(event: ChangeEvent<HTMLInputElement>) => {
             const value = Math.max(+event.target.value, minValue + 1);
             setMaxValue(value);
             event.target.value = value.toString();
           }}
+          // eslint-disable-next-line tailwindcss/no-custom-classname
           className={`thumb:pointer-events-all pointer-events-none absolute z-[4] h-0  w-[90%] appearance-none outline-none thumb:pointer-events-auto thumb:relative thumb:mt-[0.6rem] thumb:h-[2rem] thumb:w-[2rem] thumb:cursor-pointer thumb:appearance-none thumb:rounded-[50%] thumb:bg-main-blue`}
         />
         <div className="relative w-[90%]">
-          <div className="z-1 absolute h-[0.6rem] w-full rounded-[2rem] bg-light-blue"></div>
+          <div className=" absolute h-[0.6rem] w-full rounded-[2rem] bg-light-blue"></div>
           <div
             data-cy="range-slider-range"
             ref={range}
