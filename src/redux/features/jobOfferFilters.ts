@@ -16,7 +16,7 @@ export const jobOfferFilters = createSlice({
       action: PayloadAction<{
         category: string;
         value: string | [number, number];
-      }>
+      }>,
     ) => {
       const { category, value } = action.payload;
       if (typeof value === "string") {

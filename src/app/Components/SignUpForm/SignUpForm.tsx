@@ -5,7 +5,7 @@ import GoogleLogo from "../../assets/icons/google/btn_google_light_normal_ios.sv
 import GithubLogo from "../../assets/icons/github-mark-white.svg";
 import * as Yup from "yup";
 import { isEmailTaken, loginUser, userRegister } from "@/app/_actions";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Checkbox from "../atoms/Checkbox/Checbox";
 import Link from "next/link";
@@ -17,9 +17,9 @@ declare module "yup" {
     strapiEmail(message: string): StringSchema;
   }
 }
-const SignUpForm = ({ onSignUpLinkClickHandler }) => {
+const SignUpForm = () => {
   const router = useRouter();
-  const debouncedIsEmailTaken = debounce(isEmailTaken, 500); // 500 milliseconds debounce delay
+  const debouncedIsEmailTaken = debounce(isEmailTaken, 500);
 
   const initialValues = {
     email: "",
@@ -27,11 +27,10 @@ const SignUpForm = ({ onSignUpLinkClickHandler }) => {
     passwordConfirmation: "",
     agreement: false,
   };
-  const [userData, setUserData] = useState();
-  const [isLoginFailed, setIsLoginFailed] = useState(null);
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState();
+  const [isLoginFailed, setIsLoginFailed] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
-  const submitHandler = (values) => {
+  const submitHandler = (values: { email: string; password: string }) => {
     userRegister(values).then((res) => {
       if (res.error) {
         setIsLoginFailed(true);
@@ -77,15 +76,15 @@ const SignUpForm = ({ onSignUpLinkClickHandler }) => {
         async (value) => {
           const isTaken = await debouncedIsEmailTaken(value);
           return !isTaken;
-        }
+        },
       ),
     password: Yup.string().required("Required"),
     passwordConfirmation: Yup.string()
       .required("Required")
-      .oneOf([Yup.ref("password"), null], 'Must match "password" field value'),
+      .oneOf([Yup.ref("password")], 'Must match "password" field value'),
     agreement: Yup.bool().oneOf(
       [true],
-      "You need to accept the terms and conditions and privacy policies"
+      "You need to accept the terms and conditions and privacy policies",
     ),
   });
 
@@ -96,7 +95,7 @@ const SignUpForm = ({ onSignUpLinkClickHandler }) => {
         onSubmit={submitHandler}
         validationSchema={SigninSchema}
       >
-        {({ errors, touched, isSubmitting, status }) => (
+        {({ errors, touched, isSubmitting }) => (
           <Form className="flex w-full flex-col gap-[2rem] rounded-[3rem] bg-main-gray p-[4rem]">
             <div className="flex justify-between">
               <h1 className="mb-[3rem]  text-[3.6rem] font-semibold">
@@ -105,7 +104,7 @@ const SignUpForm = ({ onSignUpLinkClickHandler }) => {
             </div>
             {isSubmitting && (
               <div
-                className="border-current inline-block h-[15rem] w-[15rem] animate-spin rounded-full border-4 border-solid border-r-transparent align-[-1.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
+                className=" inline-block  h-[15rem] w-[15rem] animate-spin rounded-full border-4 border-solid border-r-transparent align-[-1.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
                 role="status"
               ></div>
             )}
@@ -121,7 +120,7 @@ const SignUpForm = ({ onSignUpLinkClickHandler }) => {
                   </button>
                   <button
                     type="button"
-                    className="flex w-full items-center bg-[#333] pl-[1rem] text-[1.4rem] font-medium text-white transition-all hover:bg-[#444]"
+                    className="flex w-full items-center bg-[#333] pl-[1rem] text-[1.4rem] font-medium text-white transition-all  hover:bg-[#444]"
                   >
                     <GithubLogo className="mr-[1rem] h-[2.2rem] w-[2.2rem] " />
                     Sign up with GitHub
@@ -221,7 +220,11 @@ const SignUpForm = ({ onSignUpLinkClickHandler }) => {
                       setIsLoginModalOpen(false);
                     }}
                   >
-                    <LoginForm onSignUpLinkClick={onSignUpLinkClickHandler} />
+                    <LoginForm
+                      onSignUpLinkClick={() => {
+                        setIsLoginModalOpen(false);
+                      }}
+                    />
                   </Modal>
                 </div>
               </>

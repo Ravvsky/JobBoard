@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Button from "../Button/Button";
 import MenuItem from "../MenuItem/MenuItem";
 import MobileNavigation from "./MobileNavigation/MobileNavigation";
@@ -8,7 +8,9 @@ import Modal from "../Modal/Modal";
 import LoginForm from "../LoginForm/LoginForm";
 
 const Navigation = () => {
-  const buttonClickHandler = () => {};
+  const buttonClickHandler = () => {
+    console.log("");
+  };
   //TODO Test component after creating menu functionality on backend
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const loginButtonHandler = () => {

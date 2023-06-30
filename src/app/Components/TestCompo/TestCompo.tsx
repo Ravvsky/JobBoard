@@ -3,11 +3,12 @@
 import { getUserData, logoutUser } from "@/app/_actions";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { User } from "@/app/types/User";
 
 const TestCompo = () => {
   const router = useRouter();
 
-  const [userData, setUserData] = useState();
+  const [userData, setUserData] = useState<User>();
   useEffect(() => {
     getUserData().then((res) => {
       setUserData(res);

@@ -1,6 +1,14 @@
 import { createPortal } from "react-dom";
-import { useState, useRef } from "react";
+import { useRef, ReactNode, MouseEvent } from "react";
 import { twMerge } from "tailwind-merge";
+
+interface ModalProps {
+  isOpen: boolean;
+  children: ReactNode;
+  closeModal: () => void;
+  className?: string;
+  childrenClassName?: string;
+}
 
 const Modal = ({
   isOpen,
@@ -8,15 +16,11 @@ const Modal = ({
   closeModal,
   className,
   childrenClassName,
-}) => {
-  const modalRef = useRef(null);
+}: ModalProps) => {
+  const modalRef = useRef<HTMLDivElement>(null);
 
-  const handleClickOutside = (event) => {
-    if (
-      modalRef.current &&
-      !modalRef.current.contains(event.target) &&
-      event.target.closest(".modal-container") === null
-    ) {
+  const handleClickOutside = (event: MouseEvent<HTMLDivElement>) => {
+    if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
       closeModal();
     }
   };
@@ -25,17 +29,17 @@ const Modal = ({
     isOpen && (
       <div
         className={twMerge(
-          "absolute left-0 top-0 z-[9999] flex h-screen w-full bg-light-gray bg-opacity-50",
-          className
+          "fixed left-0 top-0 z-[9999] flex h-screen w-full bg-light-gray bg-opacity-50",
+          className,
         )}
         onClick={handleClickOutside}
       >
-        <div ref={modalRef} className={childrenClassName + " modal-container"}>
+        <div ref={modalRef} className={`${childrenClassName} `}>
           {children}
         </div>
       </div>
     ),
-    document.body
+    document.body,
   );
 };
 

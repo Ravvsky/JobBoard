@@ -6,11 +6,10 @@ describe("<FilterOption />", () => {
   it("renders with correct label  ", () => {
     // see: https://on.cypress.io/mounting-react
     const label = "label";
-    const category = "category";
     cy.mount(
       <Providers>
         <FilterOption label={label} category={label} />
-      </Providers>
+      </Providers>,
     );
     cy.get('[data-cy="label"]').contains(label);
   });

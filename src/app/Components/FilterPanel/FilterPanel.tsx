@@ -2,7 +2,13 @@
 import { useState } from "react";
 import ArrowIcon from "../../assets/icons/arrow.svg";
 
-const FilterPanel = ({ name, children }: { name: string; children: any }) => {
+const FilterPanel = ({
+  name,
+  children,
+}: {
+  name: string;
+  children: React.ReactNode;
+}) => {
   const [isOpen, setIsOpen] = useState(true);
 
   return (

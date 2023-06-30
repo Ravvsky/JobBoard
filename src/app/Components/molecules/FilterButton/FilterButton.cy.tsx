@@ -11,7 +11,7 @@ describe("<FilterButton />", () => {
         <FilterButton type="button" category="test">
           Test Filter
         </FilterButton>
-      </Providers>
+      </Providers>,
     );
     cy.get('[data-cy="FilterButton"]').should("have.text", "Test Filter");
   });

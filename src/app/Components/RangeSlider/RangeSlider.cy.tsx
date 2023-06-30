@@ -6,7 +6,7 @@ describe("<RangeSlider />", () => {
     cy.mount(
       <Providers>
         <RangeSlider min={0} max={1000} />
-      </Providers>
+      </Providers>,
     );
   });
   it("should update the range slider when the minimum value changes", () => {
@@ -19,7 +19,7 @@ describe("<RangeSlider />", () => {
     cy.get('[data-cy="range-slider-range"]').should(
       "have.attr",
       "style",
-      "left: 30%; width: 70%;"
+      "left: 30%; width: 70%;",
     );
   });
 
@@ -32,7 +32,7 @@ describe("<RangeSlider />", () => {
     cy.get('[data-cy="range-slider-range"]').should(
       "have.attr",
       "style",
-      "left: 0%; width: 70%;"
+      "left: 0%; width: 70%;",
     );
   });
 });

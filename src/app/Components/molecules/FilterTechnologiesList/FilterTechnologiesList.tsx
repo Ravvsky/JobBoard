@@ -3,25 +3,25 @@ import { useState } from "react";
 import RoundedImage from "../../atoms/RoundedImage/RoundedImage";
 import { useAppDispatch } from "@/redux/hooks";
 import { setFilter } from "@/redux/features/jobOfferFilters";
+import { Technology } from "@/app/types/Technology";
 
 const FilterTechnologiesList = ({
   technologies,
   category,
 }: {
-  technologies: any;
+  technologies: [Technology];
   category: string;
 }) => {
   const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
-  const [clickedNames, setClickedNames] = useState([]);
+  const [clickedNames, setClickedNames] = useState<string[]>([]);
   const dispatch = useAppDispatch();
 
-  const clickHandler = (name) => {
-    console.log(name);
-    dispatch(setFilter({ category, value: name }));
+  const clickHandler = (name: string) => {
+    dispatch(setFilter({ category: category, value: name }));
 
     if (clickedNames.includes(name)) {
       setClickedNames(
-        clickedNames.filter((clickedName) => clickedName !== name)
+        clickedNames.filter((clickedName) => clickedName !== name),
       );
     } else {
       setClickedNames([...clickedNames, name]);

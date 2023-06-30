@@ -2,10 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @layer base {
-  a{
-    @apply text-main-blue hover:text-light-blue transition-all
+  a {
+    @apply text-main-blue hover:text-light-blue transition-all;
   }
 }
 :root {
@@ -21,7 +20,7 @@
     --background-end-rgb: 44, 44, 44;
   }
 }
-html{
+html {
   font-size: 0.625rem;
 }
 body {

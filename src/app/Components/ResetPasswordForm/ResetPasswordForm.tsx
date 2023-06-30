@@ -1,5 +1,5 @@
 "use client";
-import { ErrorMessage, Field, Form, Formik } from "formik";
+import { ErrorMessage, Form, Formik } from "formik";
 import * as Yup from "yup";
 import Input from "../atoms/Input/Input";
 import { userResetPassword } from "@/app/_actions";
@@ -7,27 +7,32 @@ import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 
 const ResetPasswordForm = () => {
-  const initialValues = { password: "", passwordConfirmation: "" };
+  const initialValues = { password: "", passwordConfirmation: "", code: "" };
 
   const passwordRecoveyValidationSchema = Yup.object().shape({
     password: Yup.string()
       .min(6, "Password must be at least 6 characters long")
       .required("Required"),
     passwordConfirmation: Yup.string().oneOf(
-      [Yup.ref("password"), null],
-      'Must match "password" field value'
+      [Yup.ref("password")],
+      'Must match "password" field value',
     ),
   });
 
   const [isPasswordChanged, setIsPasswordChanged] = useState(false);
   const code = useSearchParams().get("code");
-  const submitHandler = async (values) => {
-    values.code = code;
-    userResetPassword(values).then((res) => {
-      console.log(res);
-      setIsPasswordChanged(true);
-    });
-    console.log(values);
+
+  const submitHandler = async (values: {
+    code: string;
+    password: string;
+    passwordConfirmation: string;
+  }) => {
+    if (code) {
+      values.code = code;
+      userResetPassword(values).then(() => {
+        setIsPasswordChanged(true);
+      });
+    }
   };
 
   if (isPasswordChanged) {
