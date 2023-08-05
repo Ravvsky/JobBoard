@@ -1,3 +1,4 @@
+import { Image } from "./Image";
 import { UserWorkExperience } from "./UserWorkExperience";
 
 export type User = {
@@ -17,4 +18,5 @@ export type User = {
   secondName: string;
   bio: string;
   jobTimeline: UserWorkExperience[];
+  avatar: Image;
 };
