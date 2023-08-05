@@ -113,6 +113,7 @@ const LoginForm = ({
                 placeholder={"Email"}
                 errors={errors.email}
                 touched={touched.email}
+                disabled={false}
               />
               <ErrorMessage
                 component="div"
@@ -127,6 +128,7 @@ const LoginForm = ({
                 placeholder={"Password"}
                 errors={errors.password}
                 touched={touched.password}
+                disabled={false}
               />{" "}
               <ErrorMessage
                 component="div"

@@ -51,6 +51,7 @@ const PasswordRecoveryForm = ({ onBackClick }: { onBackClick: () => void }) => {
                       placeholder={"Email"}
                       errors={errors.email}
                       touched={touched.email}
+                      disabled={false}
                     />
                     <ErrorMessage
                       component="div"

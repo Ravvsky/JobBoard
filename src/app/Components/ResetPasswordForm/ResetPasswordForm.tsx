@@ -55,6 +55,7 @@ const ResetPasswordForm = () => {
                 placeholder={"New password"}
                 errors={errors.password}
                 touched={touched.password}
+                disabled={false}
               />
               <ErrorMessage
                 component="div"
@@ -67,6 +68,7 @@ const ResetPasswordForm = () => {
                 placeholder={"Confirm password"}
                 errors={errors.password}
                 touched={touched.password}
+                disabled={false}
               />
               <ErrorMessage
                 component="div"
