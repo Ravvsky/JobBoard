@@ -4,7 +4,6 @@ import { cookies } from "next/headers";
 export async function fetchJobOffersAction(filters?: string) {
   const API_TOKEN = process.env.API_TOKEN;
   const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
-  console.log(filters);
   const data = await fetch(
     `${BACKEND_URL}/api/job-offers?${
       filters && filters.length > 0 && filters
@@ -65,7 +64,7 @@ export async function getUserData() {
   if (!userToken) {
     throw new Error("User token is missing or undefined.");
   }
-  const data = await fetch(`${BACKEND_URL}/api/users/me`, {
+  const data = await fetch(`${BACKEND_URL}/api/users/me?populate=*`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${userToken.value}`,
@@ -109,7 +108,6 @@ export async function userResetPassword(passwordData: {
 }) {
   const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
   const USERS_API_TOKEN = process.env.USERS_API_TOKEN;
-  console.log(passwordData);
   const data = await fetch(`${BACKEND_URL}/api/auth/reset-password`, {
     cache: "no-store",
     method: "POST",
@@ -176,6 +174,32 @@ export async function isEmailTaken(email: string) {
 
       return false;
     })
+    .catch((error) => {
+      return { error: error.code };
+    });
+
+  return data;
+}
+
+export async function updateProfile<T>({
+  id,
+  dataToUpdate,
+}: {
+  id: number;
+  dataToUpdate: T;
+}): Promise<void | { error: string }> {
+  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+  const USERS_API_TOKEN = process.env.USERS_API_TOKEN;
+  const data = await fetch(`${BACKEND_URL}/api/users/${id}`, {
+    method: "PUT",
+    cache: "no-store",
+    headers: {
+      Authorization: `Bearer ${USERS_API_TOKEN}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ jobTimeline: dataToUpdate }),
+  })
+    .then((response) => response.json())
     .catch((error) => {
       return { error: error.code };
     });
