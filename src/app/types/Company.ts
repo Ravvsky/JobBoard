@@ -8,7 +8,12 @@ export interface Company {
       bio: string;
       createdAt: Date;
       publishedAt: Date;
-      logo: Image;
+      logo: {
+        data: {
+          id: number;
+          attributes: Image;
+        };
+      };
     };
   };
 }
