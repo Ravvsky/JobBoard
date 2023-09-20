@@ -11,7 +11,7 @@ const Page = async () => {
       <UserBasicInfo user={data} />
       <div className="mb-[10rem] mt-[22rem] flex gap-[2rem]">
         <div className="flex-1 ">
-          <JobTimeline initialJobs={data.jobTimeline} />
+          <JobTimeline initialJobs={data.jobTimeline} userId={data.id} />
         </div>
         <div className="flex-1 ">
           <UserSkillsList technologies={data.technologies} userId={data.id} />
