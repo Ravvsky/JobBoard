@@ -9,7 +9,7 @@ const FilterTechnologiesList = ({
   technologies,
   category,
 }: {
-  technologies: [Technology];
+  technologies: { attributes: Technology }[];
   category: string;
 }) => {
   const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
