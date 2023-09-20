@@ -1,7 +1,7 @@
-import DashboardContainer from "../Components/DashboardContainer/DashboardContainer";
 import { getUserData } from "../_actions";
 import JobTimeline from "../Components/JobTimeline/JobTimeline";
 import UserBasicInfo from "../Components/UserBasicInfo/UserBasicInfo";
+import UserSkillsList from "../Components/UserSkillsList/UserSkillsList";
 
 const Page = async () => {
   const data = await getUserData();
@@ -10,13 +10,11 @@ const Page = async () => {
     <div>
       <UserBasicInfo user={data} />
       <div className="mb-[10rem] mt-[22rem] flex gap-[2rem]">
-        <div className="flex-1 grow">
+        <div className="flex-1 ">
           <JobTimeline initialJobs={data.jobTimeline} />
         </div>
-        <div className="flex-1 grow">
-          <DashboardContainer title="My current skills">
-            <div></div>
-          </DashboardContainer>
+        <div className="flex-1 ">
+          <UserSkillsList technologies={data.technologies} userId={data.id} />
         </div>
       </div>
     </div>
