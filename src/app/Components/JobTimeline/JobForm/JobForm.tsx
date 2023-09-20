@@ -50,7 +50,7 @@ const JobForm = React.forwardRef<
     >
       {() => (
         <Form className="flex flex-col gap-[2rem]">
-          <Input
+          <Field
             name={"companyName"}
             type={"text"}
             placeholder={"Company name"}
@@ -60,18 +60,20 @@ const JobForm = React.forwardRef<
               companyName(item.id, e.target.value);
             }}
             disabled={false}
+            as={Input}
           />
           <div className="flex justify-between gap-[2rem]">
-            <Input
+            <Field
               name={"fromDate"}
               type={"date"}
               placeholder={"Joining Date"}
               errors={undefined}
               touched={undefined}
               disabled={false}
+              as={Input}
             />
             <div className="w-full">
-              <Input
+              <Field
                 name={"finishDate"}
                 type={!isFinishDate ? "date" : "text"}
                 placeholder={isFinishDate ? "Present" : "Finish Date"}
@@ -79,6 +81,7 @@ const JobForm = React.forwardRef<
                 touched={true}
                 disabled={isFinishDate}
                 isAlwaysFocused={!isFinishDate}
+                as={Input}
               />
               <div className="flex items-center gap-[1rem]">
                 <Checkbox

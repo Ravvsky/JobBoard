@@ -1,4 +1,4 @@
-import { ErrorMessage, Form, Formik } from "formik";
+import { ErrorMessage, Field, Form, Formik } from "formik";
 import Input from "../atoms/Input/Input";
 import { useState } from "react";
 import * as Yup from "yup";
@@ -45,13 +45,14 @@ const PasswordRecoveryForm = ({ onBackClick }: { onBackClick: () => void }) => {
                 </div>
                 <div className="mt-[5rem] flex flex-col gap-[2rem]">
                   <div>
-                    <Input
+                    <Field
                       name={"email"}
                       type={"email"}
                       placeholder={"Email"}
                       errors={errors.email}
                       touched={touched.email}
                       disabled={false}
+                      as={Input}
                     />
                     <ErrorMessage
                       component="div"
