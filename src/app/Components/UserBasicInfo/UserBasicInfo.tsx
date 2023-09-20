@@ -2,8 +2,9 @@ import Image from "next/image";
 import profileBackgroundImage from "../../assets/images/profile-bg.jpg";
 import SocialButton from "../SocialButton/SocialButton";
 import { User } from "@/app/types/User";
-
+import UserAvatar from "../UserAvatar/UserAvatar";
 const UserBasicInfo = ({ user }: { user: User }) => {
+  const avatarUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}${user.avatar.url}`;
   return (
     <div className="relative">
       <div className="h-[30rem]">
@@ -14,7 +15,12 @@ const UserBasicInfo = ({ user }: { user: User }) => {
         ></Image>
       </div>
       <div className="absolute bottom-[-14rem] flex h-[15rem] w-full items-center gap-[2rem]  px-[5%] ">
-        <div className="h-[23rem] w-[23rem] rounded-full border-[3px] border-solid border-main-blue bg-main-gray"></div>
+        <UserAvatar
+          userId={user.id}
+          url={avatarUrl}
+          width={user.avatar.width}
+          height={user.avatar.height}
+        />
         <div className="flex w-[calc(100%-25rem)] flex-col gap-[1.5rem]">
           <div className=" text-[3.2rem] font-semibold">
             <div className="flex items-center justify-between gap-[2rem] ">
