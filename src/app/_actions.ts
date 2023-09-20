@@ -1,5 +1,6 @@
 "use server";
 import { cookies } from "next/headers";
+import { MeiliSearch } from "meilisearch";
 
 export async function fetchJobOffersAction(filters?: string) {
   const API_TOKEN = process.env.API_TOKEN;
@@ -59,6 +60,7 @@ export async function loginUser(userData: {
 
 export async function getUserData() {
   const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+  const API_TOKEN = process.env.API_TOKEN;
 
   const userToken = cookies().get("authToken");
   if (!userToken) {
@@ -70,8 +72,21 @@ export async function getUserData() {
       Authorization: `Bearer ${userToken.value}`,
       "Content-Type": "application/json",
     },
-  }).then((response) => response.json());
-
+  })
+    .then((response) => response.json())
+    .then(async (res) => {
+      const data = await fetch(
+        `${BACKEND_URL}/api/users/${res.id}?populate=*`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${API_TOKEN}`,
+            "Content-Type": "application/json",
+          },
+        },
+      ).then((res) => res.json());
+      return data;
+    });
   return data;
 }
 
@@ -183,9 +198,11 @@ export async function isEmailTaken(email: string) {
 
 export async function updateProfile<T>({
   id,
+  fieldToUpdate,
   dataToUpdate,
 }: {
   id: number;
+  fieldToUpdate: string;
   dataToUpdate: T;
 }): Promise<void | { error: string }> {
   const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
@@ -197,7 +214,7 @@ export async function updateProfile<T>({
       Authorization: `Bearer ${USERS_API_TOKEN}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ jobTimeline: dataToUpdate }),
+    body: JSON.stringify({ [fieldToUpdate]: dataToUpdate }),
   })
     .then((response) => response.json())
     .catch((error) => {
@@ -205,4 +222,56 @@ export async function updateProfile<T>({
     });
 
   return data;
+}
+
+export async function uploadFile({ formData, userId }) {
+  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+  const UPLOAD_TOKEN = process.env.UPLOAD_TOKEN;
+
+  const headers = new Headers();
+  headers.append("Authorization", `Bearer ${UPLOAD_TOKEN}`);
+
+  const data = await fetch(`${BACKEND_URL}/api/upload`, {
+    method: "POST",
+    cache: "no-store",
+    headers: headers,
+    body: formData,
+  })
+    .then((response) => response.json())
+    .then((res) =>
+      updateProfile({ id: userId, fieldToUpdate: "avatar", dataToUpdate: res }),
+    )
+    .catch((error) => {
+      return { error: error.code };
+    });
+
+  return data;
+}
+
+export async function getItemsInCollection(
+  collection: string,
+  query: string,
+  attributesToSearchOn?: string,
+) {
+  const MEILISEARCH_URL = process.env.NEXT_PUBLIC_MEILISEARCH_URL;
+  const MEILISEARCH_KEY = process.env.MEILISEARCH_KEY;
+  if (MEILISEARCH_URL === undefined || MEILISEARCH_URL === "") {
+    throw Error("MEILISEARCH_URL variable is undefined or is an empty string");
+  }
+  const meiliSearch = new MeiliSearch({
+    host: MEILISEARCH_URL,
+    apiKey: MEILISEARCH_KEY,
+  });
+  try {
+    const searchOptions = attributesToSearchOn
+      ? { attributesToSearchOn: [attributesToSearchOn] }
+      : undefined;
+    const result = await meiliSearch
+      .index(collection)
+      .search(query, searchOptions);
+    return result;
+  } catch (error) {
+    console.error("Error performing search:", error);
+    throw error; // Rethrow the error to handle it in the calling code
+  }
 }
