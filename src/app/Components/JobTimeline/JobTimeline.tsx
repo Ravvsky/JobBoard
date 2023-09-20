@@ -19,8 +19,10 @@ import { UserWorkExperience } from "@/app/types/UserWorkExperience";
 
 const JobTimeline = ({
   initialJobs,
+  userId,
 }: {
   initialJobs: UserWorkExperience[];
+  userId: number;
 }) => {
   const [jobs, setJobs] = useState(initialJobs);
 
@@ -45,11 +47,13 @@ const JobTimeline = ({
 
   useEffect(() => {
     if (dataToUpdate.length > 0) {
-      updateProfile({ id: 118, dataToUpdate: dataToUpdate }).then(() =>
-        setDataToUpdate([]),
-      );
+      updateProfile({
+        id: userId,
+        fieldToUpdate: "jobTimeline",
+        dataToUpdate: dataToUpdate,
+      }).then(() => setDataToUpdate([]));
     }
-  }, [dataToUpdate]);
+  }, [dataToUpdate, userId]);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   const toggleAccordion = (index: SetStateAction<number | null>) => {
