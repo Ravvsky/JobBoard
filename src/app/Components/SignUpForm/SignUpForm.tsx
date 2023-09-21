@@ -132,12 +132,14 @@ const SignUpForm = () => {
                   </div>
                 </div>
                 <div className="flex flex-col gap-[1rem]">
-                  <Input
+                  <Field
                     name={"email"}
                     type={"email"}
                     placeholder={"Email"}
                     errors={errors.email}
                     touched={touched.email}
+                    disabled={false}
+                    as={Input}
                   />
                   <ErrorMessage
                     component="div"
@@ -146,12 +148,14 @@ const SignUpForm = () => {
                   />
                 </div>
                 <div className="flex flex-col gap-[1rem]">
-                  <Input
+                  <Field
                     name={"password"}
                     type={"password"}
                     placeholder={"Password"}
                     errors={errors.password}
                     touched={touched.password}
+                    disabled={false}
+                    as={Input}
                   />{" "}
                   <ErrorMessage
                     component="div"
@@ -160,12 +164,14 @@ const SignUpForm = () => {
                   />
                 </div>
                 <div className="flex flex-col gap-[1rem]">
-                  <Input
+                  <Field
                     name={"passwordConfirmation"}
                     type={"password"}
                     placeholder={"Repeat password"}
                     errors={errors.password}
                     touched={touched.password}
+                    disabled={false}
+                    as={Input}
                   />{" "}
                   <ErrorMessage
                     component="div"

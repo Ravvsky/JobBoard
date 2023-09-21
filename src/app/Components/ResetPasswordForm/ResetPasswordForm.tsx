@@ -1,5 +1,5 @@
 "use client";
-import { ErrorMessage, Form, Formik } from "formik";
+import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import Input from "../atoms/Input/Input";
 import { userResetPassword } from "@/app/_actions";
@@ -49,24 +49,28 @@ const ResetPasswordForm = () => {
         {({ errors, touched }) => (
           <Form className="mt-[2rem] flex h-full flex-col justify-between gap-[2rem]">
             <div className="flex flex-col gap-[2rem]">
-              <Input
+              <Field
                 name={"password"}
                 type={"password"}
                 placeholder={"New password"}
                 errors={errors.password}
                 touched={touched.password}
+                disabled={false}
+                as={Input}
               />
               <ErrorMessage
                 component="div"
                 name="password"
                 className="mt-[3rem] text-left text-[1.2rem] text-[#ff0000]"
               />
-              <Input
+              <Field
                 name={"passwordConfirmation"}
                 type={"password"}
                 placeholder={"Confirm password"}
                 errors={errors.password}
                 touched={touched.password}
+                disabled={false}
+                as={Input}
               />
               <ErrorMessage
                 component="div"

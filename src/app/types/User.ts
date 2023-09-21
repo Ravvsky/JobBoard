@@ -1,4 +1,8 @@
-export interface User {
+import { Image } from "./Image";
+import { Technology } from "./Technology";
+import { UserWorkExperience } from "./UserWorkExperience";
+
+export type User = {
   id: number;
   username: string;
   email: string;
@@ -7,4 +11,14 @@ export interface User {
   blocked: boolean;
   createdAt: string;
   updatedAt: string;
-}
+  twitterLink: string;
+  githubLink: string;
+  dribbleLink: string;
+  linkedinLink: string;
+  firstName: string;
+  secondName: string;
+  bio: string;
+  jobTimeline: UserWorkExperience[];
+  avatar: Image;
+  technologies: Technology[];
+};
