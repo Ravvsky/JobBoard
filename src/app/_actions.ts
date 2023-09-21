@@ -272,6 +272,29 @@ export async function getItemsInCollection(
     return result;
   } catch (error) {
     console.error("Error performing search:", error);
-    throw error; // Rethrow the error to handle it in the calling code
+    throw error;
   }
+}
+
+export async function getUserBySlug({ slug }: { slug: string }) {
+  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+  const USERS_API_TOKEN = process.env.USERS_API_TOKEN;
+  const headers = new Headers();
+  headers.append("Authorization", `Bearer ${USERS_API_TOKEN}`);
+
+  const data = await fetch(
+    `${BACKEND_URL}/api/slugify/slugs/user/${slug}?populate=*`,
+    {
+      method: "GET",
+      cache: "no-store",
+      headers: headers,
+    },
+  )
+    .then((response) => response.json())
+
+    .catch((error) => {
+      return { error: error.code };
+    });
+
+  return data;
 }
