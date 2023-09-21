@@ -9,7 +9,7 @@ const UserSkillsList = ({
   userId,
 }: {
   technologies: Technology[];
-  userId: number;
+  userId?: number;
 }) => {
   const [itemsWidth, setItemsWidth] = useState("");
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
@@ -26,9 +26,13 @@ const UserSkillsList = ({
     <DashboardContainer
       title="My current skills"
       className=" flex h-[30rem] flex-col justify-start"
-      onClick={() => {
-        setIsLoginModalOpen(true);
-      }}
+      onClick={
+        userId
+          ? () => {
+              setIsLoginModalOpen(true);
+            }
+          : undefined
+      }
     >
       <div className="flex  grow  items-center">
         <div
@@ -39,13 +43,15 @@ const UserSkillsList = ({
           ))}
         </div>
       </div>
-      <SkillModal
-        technologies={technologies}
-        userId={userId}
-        isOpen={isLoginModalOpen}
-        closeModal={() => setIsLoginModalOpen(false)}
-        updateSkills={updateUserSkills}
-      />
+      {userId && (
+        <SkillModal
+          technologies={technologies}
+          userId={userId}
+          isOpen={isLoginModalOpen}
+          closeModal={() => setIsLoginModalOpen(false)}
+          updateSkills={updateUserSkills}
+        />
+      )}
     </DashboardContainer>
   );
 };

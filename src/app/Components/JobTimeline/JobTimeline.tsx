@@ -22,7 +22,7 @@ const JobTimeline = ({
   userId,
 }: {
   initialJobs: UserWorkExperience[];
-  userId: number;
+  userId?: number;
 }) => {
   const [jobs, setJobs] = useState(initialJobs);
 
@@ -46,7 +46,7 @@ const JobTimeline = ({
   };
 
   useEffect(() => {
-    if (dataToUpdate.length > 0) {
+    if (dataToUpdate.length > 0 && userId) {
       updateProfile({
         id: userId,
         fieldToUpdate: "jobTimeline",
@@ -125,7 +125,7 @@ const JobTimeline = ({
   return (
     <DashboardContainer
       title="My Experience"
-      onClick={editHandler}
+      onClick={userId ? editHandler : undefined}
       className={` relative   ${
         showFullContent ? "max-h-none" : "max-h-[30rem]"
       } overflow-hidden`}
@@ -171,105 +171,107 @@ const JobTimeline = ({
       >
         {showFullContent ? "Show less" : "Show more"}
       </button>
-      <Modal
-        className="items-center justify-center"
-        isOpen={isLoginModalOpen}
-        childrenClassName="w-1/3  "
-        closeModal={() => {
-          setIsLoginModalOpen(false);
-        }}
-      >
-        <div className="rounded-[5rem]  bg-light-gray p-[3rem] shadow-md shadow-light-blue">
-          <div className="pb-[3rem] font-semibold text-[2rme]">
-            Edit your job history
-          </div>
-          {jobs.map((item: UserWorkExperience, index: number) => {
-            return (
-              <div key={index} className={`border border-light-gray `}>
-                <div
-                  className={`${
-                    index === 0 && "rounded-t-[1rem]"
-                  } flex w-full items-center justify-between bg-main-gray px-4 py-[2rem] text-left`}
-                  onClick={() => {
-                    toggleAccordion(index);
-                  }}
-                >
-                  {newCompanyNames[index]
-                    ? newCompanyNames[index]
-                    : item.companyName}
-                  <button
-                    type="button"
-                    className="ml-2"
+      {userId && (
+        <Modal
+          className="items-center justify-center"
+          isOpen={isLoginModalOpen}
+          childrenClassName="w-1/3  "
+          closeModal={() => {
+            setIsLoginModalOpen(false);
+          }}
+        >
+          <div className="rounded-[5rem]  bg-light-gray p-[3rem] shadow-md shadow-light-blue">
+            <div className="pb-[3rem] font-semibold text-[2rme]">
+              Edit your job history
+            </div>
+            {jobs.map((item: UserWorkExperience, index: number) => {
+              return (
+                <div key={index} className={`border border-light-gray `}>
+                  <div
+                    className={`${
+                      index === 0 && "rounded-t-[1rem]"
+                    } flex w-full items-center justify-between bg-main-gray px-4 py-[2rem] text-left`}
                     onClick={() => {
-                      removeJob(item.id);
+                      toggleAccordion(index);
                     }}
                   >
-                    X
-                  </button>
+                    {newCompanyNames[index]
+                      ? newCompanyNames[index]
+                      : item.companyName}
+                    <button
+                      type="button"
+                      className="ml-2"
+                      onClick={() => {
+                        removeJob(item.id);
+                      }}
+                    >
+                      X
+                    </button>
+                  </div>
+                  <div
+                    className={twMerge(
+                      `h-0 bg-main-gray/50 px-4 py-2 opacity-0 overflow-hidden ${
+                        activeIndex === index && "h-full opacity-100 "
+                      }`,
+                    )}
+                  >
+                    <JobForm
+                      ref={(ref: FormikProps<UserWorkExperience>) => {
+                        formikRefs.current[index] = ref;
+                      }}
+                      item={item}
+                      companyName={(itemId, companyName) => {
+                        setNewCompanyNames((prevNames) => {
+                          const updatedNames = [...prevNames];
+                          const indexToUpdate = jobs.findIndex(
+                            (item: { id: number | null }) => item.id === itemId,
+                          );
+                          updatedNames[indexToUpdate] = companyName;
+                          return updatedNames;
+                        });
+                      }}
+                      onSubmit={(newItem) => {
+                        setDataToUpdate((dataToUpdate) => [
+                          ...dataToUpdate,
+                          newItem,
+                        ]);
+                      }}
+                    />
+                  </div>
                 </div>
-                <div
-                  className={twMerge(
-                    `h-0 bg-main-gray/50 px-4 py-2 opacity-0 overflow-hidden ${
-                      activeIndex === index && "h-full opacity-100 "
-                    }`,
-                  )}
-                >
-                  <JobForm
-                    ref={(ref: FormikProps<UserWorkExperience>) => {
-                      formikRefs.current[index] = ref;
-                    }}
-                    item={item}
-                    companyName={(itemId, companyName) => {
-                      setNewCompanyNames((prevNames) => {
-                        const updatedNames = [...prevNames];
-                        const indexToUpdate = jobs.findIndex(
-                          (item: { id: number | null }) => item.id === itemId,
-                        );
-                        updatedNames[indexToUpdate] = companyName;
-                        return updatedNames;
-                      });
-                    }}
-                    onSubmit={(newItem) => {
-                      setDataToUpdate((dataToUpdate) => [
-                        ...dataToUpdate,
-                        newItem,
-                      ]);
-                    }}
-                  />
-                </div>
-              </div>
-            );
-          })}
-          <div className="flex justify-between pt-[3rem]">
-            <button
-              type="button"
-              className="rounded-[0.5rem] bg-[#f8ac99] p-[1rem] px-[2rem] text-[#ff0000] hover:bg-[#ad3737]"
-            >
-              Cancel
-            </button>
-            <button
-              type="button"
-              className="rounded-[0.5rem] bg-[#ced10b] p-[1rem] px-[2rem] text-[#ff0000] hover:bg-[#ad3737]"
-              onClick={addNewHandler}
-            >
-              Add new
-            </button>
-            <button
-              type="button"
-              className="rounded-[0.5rem] bg-[#629662] p-[1rem] px-[2rem] text-[#00ff00] transition-all hover:bg-[#437243]"
-              onClick={() => {
-                formikRefs.current.forEach(
-                  (formikRef: { submitForm: () => void }) => {
-                    formikRef.submitForm();
-                  },
-                );
-              }}
-            >
-              Save
-            </button>
+              );
+            })}
+            <div className="flex justify-between pt-[3rem]">
+              <button
+                type="button"
+                className="rounded-[0.5rem] bg-[#f8ac99] p-[1rem] px-[2rem] text-[#ff0000] hover:bg-[#ad3737]"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="rounded-[0.5rem] bg-[#ced10b] p-[1rem] px-[2rem] text-[#ff0000] hover:bg-[#ad3737]"
+                onClick={addNewHandler}
+              >
+                Add new
+              </button>
+              <button
+                type="button"
+                className="rounded-[0.5rem] bg-[#629662] p-[1rem] px-[2rem] text-[#00ff00] transition-all hover:bg-[#437243]"
+                onClick={() => {
+                  formikRefs.current.forEach(
+                    (formikRef: { submitForm: () => void }) => {
+                      formikRef.submitForm();
+                    },
+                  );
+                }}
+              >
+                Save
+              </button>
+            </div>
           </div>
-        </div>
-      </Modal>
+        </Modal>
+      )}
     </DashboardContainer>
   );
 };
