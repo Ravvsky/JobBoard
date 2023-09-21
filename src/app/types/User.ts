@@ -1,4 +1,5 @@
 import { Image } from "./Image";
+import { Technology } from "./Technology";
 import { UserWorkExperience } from "./UserWorkExperience";
 
 export type User = {
@@ -19,4 +20,5 @@ export type User = {
   bio: string;
   jobTimeline: UserWorkExperience[];
   avatar: Image;
+  technologies: Technology[];
 };
