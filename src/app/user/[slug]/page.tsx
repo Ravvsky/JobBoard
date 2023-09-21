@@ -1,7 +1,7 @@
 import JobTimeline from "@/app/Components/JobTimeline/JobTimeline";
 import UserBasicInfo from "@/app/Components/UserBasicInfo/UserBasicInfo";
 import UserSkillsList from "@/app/Components/UserSkillsList/UserSkillsList";
-import { getUserBySlug, getUserData } from "@/app/_actions";
+import { getUserBySlug } from "@/app/_actions";
 import { User } from "@/app/types/User";
 import slugEndpointDataTransformer from "@/app/utils/slugEndpointDataTransformer";
 
