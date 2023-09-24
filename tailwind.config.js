@@ -7,7 +7,7 @@ module.exports = {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
-  safelist: ["h-[2rem], w-[2rem], h-[1.4rem], w-[1.4rem]"],
+  safelist: ["h-[2rem], w-[2rem], h-[1.4rem], w-[1.4rem],line-clamp-3"],
   theme: {
     colors: {
       white: "#fff",
