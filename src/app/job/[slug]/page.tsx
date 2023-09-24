@@ -5,6 +5,7 @@ import RoundedImage from "@/app/Components/atoms/RoundedImage/RoundedImage";
 import { getJobOfferBySlug } from "@/app/_actions";
 import slugEndpointDataTransformer from "@/app/utils/slugEndpointDataTransformer";
 import ApplySection from "./ApplySection";
+import ExpandableText from "@/app/Components/ExpandableText/ExpandableText";
 const Page = async ({ params }: { params: { slug: string } }) => {
   const data = slugEndpointDataTransformer(
     await getJobOfferBySlug({ slug: params.slug }),
@@ -67,6 +68,12 @@ const Page = async ({ params }: { params: { slug: string } }) => {
         </div>
       </div>
       <ApplySection />
+      <ExpandableText
+        text={data.legalNote}
+        lines={3}
+        moreText={"Show more"}
+        lessText={"Show less"}
+      />
     </div>
   );
 };
