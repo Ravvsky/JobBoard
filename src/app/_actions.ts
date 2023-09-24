@@ -1,6 +1,7 @@
 "use server";
 import { cookies } from "next/headers";
 import { MeiliSearch } from "meilisearch";
+import qs from "qs";
 
 export async function fetchJobOffersAction(filters?: string) {
   const API_TOKEN = process.env.API_TOKEN;
@@ -284,6 +285,52 @@ export async function getUserBySlug({ slug }: { slug: string }) {
 
   const data = await fetch(
     `${BACKEND_URL}/api/slugify/slugs/user/${slug}?populate=*`,
+    {
+      method: "GET",
+      cache: "no-store",
+      headers: headers,
+    },
+  )
+    .then((response) => response.json())
+
+    .catch((error) => {
+      return { error: error.code };
+    });
+
+  return data;
+}
+export async function getJobOfferBySlug({ slug }: { slug: string }) {
+  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+  const API_TOKEN = process.env.API_TOKEN;
+
+  const headers = new Headers();
+  headers.append("Authorization", `Bearer ${API_TOKEN}`);
+  const query = qs.stringify(
+    {
+      populate: {
+        company: {
+          populate: ["logo"],
+        },
+        technologies: {
+          populate: ["logo"],
+        },
+        locations: true,
+        seniority: true,
+        specializations: true,
+        expectations: true,
+        niceToHaves: true,
+        benefits: true,
+        responsibilities: true,
+        recruitmentProcess: true,
+      },
+    },
+
+    {
+      encodeValuesOnly: true, // prettify URL
+    },
+  );
+  const data = await fetch(
+    `${BACKEND_URL}/api/slugify/slugs/job-offer/${slug}?${query}`,
     {
       method: "GET",
       cache: "no-store",
