@@ -1,9 +1,10 @@
+import Button from "@/app/Components/Button/Button";
 import CardWithIcon from "@/app/Components/CardWithIcon/CardWithIcon";
 import JobOfferCriteriaList from "@/app/Components/JobOfferCriteriaList/JobOfferCriteriaList";
 import RoundedImage from "@/app/Components/atoms/RoundedImage/RoundedImage";
 import { getJobOfferBySlug } from "@/app/_actions";
 import slugEndpointDataTransformer from "@/app/utils/slugEndpointDataTransformer";
-// import Code from "../../assets/icons/code.svg";
+import ApplySection from "./ApplySection";
 const Page = async ({ params }: { params: { slug: string } }) => {
   const data = slugEndpointDataTransformer(
     await getJobOfferBySlug({ slug: params.slug }),
@@ -54,7 +55,6 @@ const Page = async ({ params }: { params: { slug: string } }) => {
 
       <div className="flex flex-col gap-[3rem]">
         <div className="text-[2rem] font-semibold">Our Recruitment Process</div>
-
         <div className="flex basis-0 justify-between gap-[4rem]">
           {data.recruitmentProcess.map((step, index) => (
             <CardWithIcon
@@ -66,6 +66,7 @@ const Page = async ({ params }: { params: { slug: string } }) => {
           ))}
         </div>
       </div>
+      <ApplySection />
     </div>
   );
 };
