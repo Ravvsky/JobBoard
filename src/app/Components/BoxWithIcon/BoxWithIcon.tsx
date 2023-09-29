@@ -43,7 +43,7 @@ const BoxWithIcon = ({
       break;
   }
   return (
-    <div className="flex grow basis-[0px] items-center gap-[3rem] rounded-[1.6rem] bg-[#282828] p-[2rem]">
+    <div className="flex items-center gap-[3rem] rounded-[1.6rem] bg-[#282828] p-[2rem]">
       <div>{selectedIcon}</div>
       <div className="flex flex-col gap-[1rem] ">
         <div className="text-[1.8rem] font-semibold capitalize">{title}</div>
