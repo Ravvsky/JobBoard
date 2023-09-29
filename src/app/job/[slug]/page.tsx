@@ -7,20 +7,33 @@ import slugEndpointDataTransformer from "@/app/utils/slugEndpointDataTransformer
 import ApplySection from "./ApplySection";
 import ExpandableText from "@/app/Components/ExpandableText/ExpandableText";
 import BoxWithIcon from "@/app/Components/BoxWithIcon/BoxWithIcon";
+import Image from "next/image";
 const Page = async ({ params }: { params: { slug: string } }) => {
   const data = slugEndpointDataTransformer(
     await getJobOfferBySlug({ slug: params.slug }),
   );
   const technologies = data.technologies;
-  console.log(data);
+  const companyLogoUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}${data.company.logo.url}`;
+
   return (
     <div className="flex flex-col gap-[3rem]">
+      <div className="flex items-center gap-[4rem] rounded-[1.6rem] bg-[#282828] p-[2rem]">
+        <Image
+          src={companyLogoUrl}
+          alt={""}
+          width={195}
+          height={61}
+          className="h-[6rem] object-cover"
+        />
+        <div>{data.company.Bio}</div>
+      </div>
       <div className="flex flex-col gap-[1.5rem]">
         <div className="text-[2rem] font-semibold">{data.jobTitle}</div>
         <div>{data.description}</div>
       </div>
+
       <div className="flex justify-between gap-[3rem] ">
-        <div className=" flex  gap-[3rem] ">
+        <div className=" flex  w-full gap-[3rem] ">
           <BoxWithIcon
             title={`${data.attributes.fromSalary} - ${data.attributes.toSalary} USD`}
             bottomText={"Net/month - B2B"}
@@ -31,6 +44,7 @@ const Page = async ({ params }: { params: { slug: string } }) => {
           <BoxWithIcon title={data.employmentType} icon="clock" />
         </div>
       </div>
+
       <div className="flex flex-col gap-[3rem]">
         <div className="text-[2rem] font-semibold">Tech stack</div>
         <div className="flex gap-[2rem]">
