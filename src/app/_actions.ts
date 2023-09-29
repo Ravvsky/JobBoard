@@ -279,9 +279,9 @@ export async function getItemsInCollection(
 
 export async function getUserBySlug({ slug }: { slug: string }) {
   const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
-  const USERS_API_TOKEN = process.env.USERS_API_TOKEN;
+  const API_TOKEN = process.env.API_TOKEN;
   const headers = new Headers();
-  headers.append("Authorization", `Bearer ${USERS_API_TOKEN}`);
+  headers.append("Authorization", `Bearer ${API_TOKEN}`);
 
   const data = await fetch(
     `${BACKEND_URL}/api/slugify/slugs/user/${slug}?populate=*`,
