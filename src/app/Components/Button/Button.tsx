@@ -1,3 +1,5 @@
+import { twMerge } from "tailwind-merge";
+
 const Button = ({
   children,
   type,
@@ -13,7 +15,9 @@ const Button = ({
     <button
       type={type}
       onClick={onClick}
-      className={` rounded-[5rem] bg-main-blue px-[3.2rem] py-[0.4rem] text-[2rem] text-dark-blue transition-all duration-200 ease-in hover:bg-white ${className}`}
+      className={twMerge(
+        `rounded-[5rem] bg-main-blue px-[3.2rem] py-[0.4rem] text-[2rem] text-dark-blue transition-all duration-200 ease-in hover:bg-white ${className}`,
+      )}
     >
       {children}
     </button>
