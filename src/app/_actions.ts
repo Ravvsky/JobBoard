@@ -326,11 +326,46 @@ export async function getJobOfferBySlug({ slug }: { slug: string }) {
     },
 
     {
-      encodeValuesOnly: true, // prettify URL
+      encodeValuesOnly: true,
     },
   );
   const data = await fetch(
     `${BACKEND_URL}/api/slugify/slugs/job-offer/${slug}?${query}`,
+    {
+      method: "GET",
+      cache: "no-store",
+      headers: headers,
+    },
+  )
+    .then((response) => response.json())
+
+    .catch((error) => {
+      return { error: error.code };
+    });
+
+  return data;
+}
+export async function getCompany({ companyName }: { companyName: string }) {
+  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+  const API_TOKEN = process.env.API_TOKEN;
+
+  const headers = new Headers();
+  headers.append("Authorization", `Bearer ${API_TOKEN}`);
+  const query = qs.stringify(
+    {
+      populate: {
+        job_offers: {
+          populate: ["specializations", "peopleWhoApplied"],
+        },
+      },
+    },
+
+    {
+      encodeValuesOnly: true,
+    },
+  );
+  const data = await fetch(
+    `${BACKEND_URL}/api/slugify/slugs/company/${companyName}?${query}&publicationState=preview`,
     {
       method: "GET",
       cache: "no-store",
