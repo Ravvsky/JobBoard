@@ -24,6 +24,7 @@
     "eslint-config-next": "13.3.1",
     "formik": "^2.2.9",
     "isomorphic-dompurify": "^1.7.0",
+    "lodash.get": "^4.4.2",
     "marked": "^5.1.0",
     "meilisearch": "^0.34.2",
     "next": "^13.4.4",
