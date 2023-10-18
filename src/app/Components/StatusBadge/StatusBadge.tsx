@@ -1,7 +1,7 @@
 const StatusBadge = ({ status }: { status: "active" | "inactive" }) => {
   return (
     <div
-      className={`flex items-center gap-[0.6rem] rounded-[1.6rem] px-[0.6rem] py-[0.2rem] ${
+      className={`flex h-min w-min items-center gap-[0.6rem] rounded-[1.6rem] px-[0.6rem] py-[0.2rem] ${
         status === "active" && "bg-[#ECFDF3] text-[#037847]"
       } ${status === "inactive" && "bg-[#F2F4F7] text-[#364254]"}`}
     >
